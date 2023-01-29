@@ -1,0 +1,13 @@
+steps:
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/vicharm-photography-blog/vicharm-photography-backend', '.']
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/vicharm-photography-blog/vicharm-photography-backend']
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'vicharm-photography-blog', '--image', 'gcr.io/vicharm-photography-blog/vicharm-photography-backend', '--region', 'asia-east1', '--platform', 'managed', '--port', '3001']
+images:
+- gcr.io/vicharm-photography-blog/vicharm-photography-backend
